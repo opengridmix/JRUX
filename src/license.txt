@@ -1,0 +1,3 @@
+jquery:MIT:1.12.3
+fontawesome:http://fontawesome.io/license/:cc/mit/oil
+bootstrap:mit:3.3.6
