@@ -17,8 +17,8 @@
 		define(['jquery', 'fuelux/combobox', 'fuelux/infinite-scroll', 'fuelux/search', 'fuelux/selectlist'], factory);
 	} else if (typeof exports === 'object') {
 		// Node/CommonJS
-		module.exports = factory(require('jquery'), require('./../field/jrux.field.combobox.js'), require('./jrux.infinite-scroll.js'),
-			require('./../field/jrux.field.search.js'), require('./../field/jrux.field.select.js'));
+		module.exports = factory(require('jquery'), require('./../element/jrux.field.combobox.js'), require('./jrux.infinite-scroll.js'),
+			require('./../element/jrux.field.search.js'), require('./../element/jrux.field.select.js'));
 	} else {
 		// OR use browser globals if AMD is not present
 		factory(jQuery);

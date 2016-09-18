@@ -17,7 +17,7 @@
 		define(['jquery', 'fuelux/repeater', 'fuelux/checkbox'], factory);
 	} else if (typeof exports === 'object') {
 		// Node/CommonJS
-		module.exports = factory(require('jquery'), require('./jrux.repeater.js'), require('./../field/jrux.field.checkbox.js'));
+		module.exports = factory(require('jquery'), require('./jrux.repeater.js'), require('./../element/jrux.field.checkbox.js'));
 	} else {
 		// OR use browser globals if AMD is not present
 		factory(jQuery);

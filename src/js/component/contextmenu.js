@@ -9,7 +9,7 @@
  * B-JUI: contextmenu.js  v1.2
  * @author K'naan (xknaan@163.com)
  * -- Modified from dwz.contextmenu.js (author:ZhangHuihua@msn.com)
- * http://git.oschina.net/xknaan/B-JUI/blob/master/BJUI/js/bjui-contextmenu.js
+ * http://git.oschina.net/xknaan/B-JUI/blob/master/ju/js/ju-contextmenu.js
  * ========================================================================
  * Copyright 2014 K'naan.
  * Licensed under Apache (http://www.apache.org/licenses/LICENSE-2.0)
@@ -25,8 +25,8 @@
     
     $(function() {
         var INIT_CONTEXTMENU = function() {
-            $menu   = $('<div id="bjui-contextmenu"></div>').hide()
-            $shadow = $('<div id="bjui-contextmenuShadow"></div>').hide()
+            $menu   = $('<div id="ju-contextmenu"></div>').hide()
+            $shadow = $('<div id="ju-contextmenuShadow"></div>').hide()
             hash    = []
             
             $('body').append('<!-- contextmenu -->').append($menu).append($shadow)
@@ -72,7 +72,7 @@
     Contextmenu.prototype.display = function(index, trigger, e, options) {
         var that    = this
         var cur     = hash[index]
-        var cp      = BJUI.regional[cur.id]
+        var cp      = ju.regional[cur.id]
         var content = FRAG[cur.id]
         
         $.each(cp, function(i, n) {
@@ -84,7 +84,7 @@
         $.each(cur.bindings, function(id, func) {
             $('[rel="'+ id +'"]', $menu).on('click', function(e) {
                 that.hide()
-                func($(trigger), $('#bjui-'+ cur.id))
+                func($(trigger), $('#ju-'+ cur.id))
             })
         })
         
@@ -100,7 +100,7 @@
         $(document).one('click', that.hide)
         
         if ($.isFunction(cur.ctrSub))
-            cur.ctrSub($(trigger), $('#bjui-'+ cur.id))
+            cur.ctrSub($(trigger), $('#ju-'+ cur.id))
     }
     
     Contextmenu.prototype.hide = function() {
@@ -188,9 +188,9 @@
         return this.each(function () {
             var $this   = $(this)
             var options = $.extend({}, Contextmenu.DEFAULTS, $this.data(), typeof option == 'object' && option)
-            var data    = $this.data('bjui.contextmenu')
+            var data    = $this.data('ju.contextmenu')
             
-            if (!data) $this.data('bjui.contextmenu', (data = new Contextmenu(this, options)))
+            if (!data) $this.data('ju.contextmenu', (data = new Contextmenu(this, options)))
             if (typeof property == 'string' && $.isFunction(data[property])) {
                 [].shift.apply(args)
                 if (!args) data[property]()

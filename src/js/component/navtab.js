@@ -9,7 +9,7 @@
  * B-JUI: navtab.js  v1.2
  * @author K'naan (xknaan@163.com)
  * -- Modified from dwz.navTab.js (author:ZhangHuihua@msn.com)
- * http://git.oschina.net/xknaan/B-JUI/blob/master/BJUI/js/bjui-navtab.js
+ * http://git.oschina.net/xknaan/B-JUI/blob/master/ju/js/ju-navtab.js
  * ========================================================================
  * Copyright 2014 K'naan.
  * Licensed under Apache (http://www.apache.org/licenses/LICENSE-2.0)
@@ -27,7 +27,7 @@
     $(function() {
         var INIT_NAVTAB = function() {
             currentIndex = 0
-            $box         = $('#bjui-navtab')
+            $box         = $('#ju-navtab')
             $tabs        = $box.find('.navtab-tab')
             $panels      = $box.find('.navtab-panel')
             $prevBtn     = $box.find('.tabsLeft')
@@ -41,7 +41,7 @@
             $nextBtn.click(function() { $(this).navtab('scrollNext') })
             $moreBtn.click(function() { $moreBox.show() })
             
-            $(document).on('click.bjui.navtab.switchtab', function(e) {
+            $(document).on('click.ju.navtab.switchtab', function(e) {
                 var $target = e.target.tagName == 'I' ? $(e.target).parent() : $(e.target)
                 
                 if ($moreBtn[0] != $target[0]) $moreBox.hide()
@@ -52,14 +52,14 @@
             $main
                 .navtab('contextmenu', $main)
                 .click(function() { $(this).navtab('switchTab', 'main') })
-                .find('> a > span').html(function(n, c) { return (mainTit = c.replace('#maintab#', BJUI.regional.maintab)) })
+                .find('> a > span').html(function(n, c) { return (mainTit = c.replace('#maintab#', ju.regional.maintab)) })
             
             options = $.extend({}, Navtab.DEFAULTS, $main.data(), {id:'main', title:mainTit})
             
             $main.data('initOptions', options).data('options', options)
             
             if ($main.attr('data-url')) {
-                $(document).one(BJUI.eventType.initUI, function(e) {
+                $(document).one(ju.eventType.initUI, function(e) {
                     $main.removeAttr('data-url').navtab('reload', options)
                 })
             }
@@ -73,7 +73,7 @@
                     if ($(this).hasClass('active')) $moreBox.hide()
                     else $(this).navtab('switchTab', 'main')
                 })
-                .find('> a').html(function(n, c) { return c.replace('#maintab#', BJUI.regional.maintab) })
+                .find('> a').html(function(n, c) { return c.replace('#maintab#', ju.regional.maintab) })
         }
         
         INIT_NAVTAB()
@@ -232,7 +232,7 @@
                     that.refresh($tab.data('initOptions').id)
                 } else {
                     $panels.hide()
-                    if ($panel.find('.bjui-ajax-mask').length) {
+                    if ($panel.find('.ju-ajax-mask').length) {
                         $panel.show()
                     } else {
                         $panel.addClass('fade').removeClass('in').show()
@@ -252,7 +252,7 @@
                 if (onSwitch) onSwitch.apply(that)
                 
                 //events
-                $panel.trigger('bjui.navtab.switch')
+                $panel.trigger('ju.navtab.switch')
             },
             closeTab: function(index, openTabid) {
                 var $tab        = this.getTabs().eq(index)
@@ -270,7 +270,7 @@
                 }
                 $tab.remove()
                 $more.remove()
-                $panel.trigger(BJUI.eventType.beforeCloseNavtab).remove()
+                $panel.trigger(ju.eventType.beforeCloseNavtab).remove()
                 
                 if (autorefreshTimer) clearInterval(autorefreshTimer)
                 if (onClose) onClose.apply(that)
@@ -315,14 +315,14 @@
                     arefre = options.autorefresh && (isNaN(String(options.autorefresh)) ? 15 : options.autorefresh)
                 
                 $panel
-                    .trigger(BJUI.eventType.beforeLoadNavtab)
+                    .trigger(ju.eventType.beforeLoadNavtab)
                     .ajaxUrl({
                         type:(options.type || 'GET'), url:options.url, data:options.data || {}, loadingmask:options.loadingmask, callback:function(response) {
                             that.tools.loadUrlCallback($panel)
                             if (onLoad) onLoad.apply(that, [$panel])
                             if (autorefreshTimer) clearInterval(autorefreshTimer)
                             if (arefre) autorefreshTimer = setInterval(function() { $panel.navtab('refresh') }, arefre * 1000)
-                            if (BJUI.ui.clientPaging && $panel.data('bjui.clientPaging')) $panel.pagination('setPagingAndOrderby', $panel)
+                            if (ju.ui.clientPaging && $panel.data('ju.clientPaging')) $panel.pagination('setPagingAndOrderby', $panel)
                         }
                     })
             }
@@ -379,14 +379,14 @@
         
         if (!options.url && options.href) options.url = options.href
         if (!options.url) {
-            BJUI.debug('Navtab Plugin: Error trying to open a navtab, url is undefined!')
+            ju.debug('Navtab Plugin: Error trying to open a navtab, url is undefined!')
             return
         } else {
             options.url = decodeURI(options.url).replacePlh($element.closest('.unitBox'))
             
             if (!options.url.isFinishedTm()) {
-                $element.alertmsg('error', (options.warn || FRAG.alertPlhMsg.replace('#plhmsg#', BJUI.regional.plhmsg)))
-                BJUI.debug('Navtab Plugin: The new navtab\'s url is incorrect, url: '+ options.url)
+                $element.alertmsg('error', (options.warn || FRAG.alertPlhMsg.replace('#plhmsg#', ju.regional.plhmsg)))
+                ju.debug('Navtab Plugin: The new navtab\'s url is incorrect, url: '+ options.url)
                 return
             }
             
@@ -395,7 +395,7 @@
         
         var iOpenIndex = options.id ? tools.indexTabId(options.id) : currentIndex
         
-        if (!options.id && !BJUI.ui.overwriteHomeTab && iOpenIndex == 0) {
+        if (!options.id && !ju.ui.overwriteHomeTab && iOpenIndex == 0) {
             options.id = 'navtab'
             iOpenIndex = -1
         }
@@ -514,7 +514,7 @@
         
         if ($tab && $tab.length) {
             $panel = this.tools.getPanel($tab.data('initOptions').id)
-            $panel.removeData('bjui.clientPaging')
+            $panel.removeData('ju.clientPaging')
             
             this.reload($tab.data('initOptions'))
         }
@@ -566,7 +566,7 @@
                     pageData = $pagerForm.serializeJson()
                     if (!option || !option.type) options.type = $pagerForm.attr('method') || 'POST'
                     if (clearQuery) {
-                        var pageInfo = BJUI.pageInfo
+                        var pageInfo = ju.pageInfo
                         
                         for (var key in pageInfo) {
                             data[pageInfo[key]] = pageData[pageInfo[key]]
@@ -588,7 +588,7 @@
     Navtab.prototype.checkTimeout = function() {
         var json = JSON.parse($currentPanel.html())
         
-        if (json && json[BJUI.keys.statusCode] == BJUI.statusCode.timeout) this.closeCurrentTab()
+        if (json && json[ju.keys.statusCode] == ju.statusCode.timeout) this.closeCurrentTab()
     }
     
     Navtab.prototype.openExternal = function(url, $panel) {
@@ -607,9 +607,9 @@
         return this.each(function () {
             var $this   = $(this)
             var options = $.extend({}, Navtab.DEFAULTS, typeof option == 'object' && option)
-            var data    = $this.data('bjui.navtab')
+            var data    = $this.data('ju.navtab')
             
-            if (!data) $this.data('bjui.navtab', (data = new Navtab(this, options)))
+            if (!data) $this.data('ju.navtab', (data = new Navtab(this, options)))
             
             if (typeof property == 'string' && $.isFunction(data[property])) {
                 [].shift.apply(args)
@@ -638,7 +638,7 @@
     // NAVTAB DATA-API
     // ==============
     
-    $(document).on('click.bjui.navtab.data-api', '[data-toggle="navtab"]', function(e) {
+    $(document).on('click.ju.navtab.data-api', '[data-toggle="navtab"]', function(e) {
         var $this   = $(this), href = $this.attr('href'), data = $this.data(), options = data.options
         
         if (options) {

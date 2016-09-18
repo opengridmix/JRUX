@@ -1,6 +1,25 @@
 /**
  Required. Ace's Basic File to Initiliaze Different Parts and Some Variables.
 */
++(function () {
+	'use strict';
+	var ju = {
+		vars:{},
+		helper:{},
+		functions: {},
+		init: function(initAnyway) {
+			//initAnyway used to make sure the call is from our RequireJS app and not a document ready event!
+			var initAnyway = !!initAnyway && true;
+			if(typeof requirejs !== "undefined" && !initAnyway) return;
+
+			for(var func in ju.functions) if(ju.functions.hasOwnProperty(func)) {
+				ju.functions[func]();
+			}
+		}
+	}
+	window.ju = ju;
+	return ju;
+})();
 
 //document ready function
 jQuery(function($) {
@@ -12,21 +31,18 @@ jQuery(function($) {
 
 //some basic variables
 (function(undefined) {
-	if( !('ju' in window) ) window['ju'] = {}
-	if( !('helper' in window['ju']) ) window['ju'].helper = {}
-	if( !('vars' in window['ju']) ) window['ju'].vars = {}
-	window['ju'].vars['icon'] = ' ju-icon ';
-	window['ju'].vars['.icon'] = '.ju-icon';
+	ju.vars['icon'] = ' ju-icon ';
+	ju.vars['.icon'] = '.ju-icon';
 
 	ju.vars['touch']	= ('ontouchstart' in window);//(('ontouchstart' in document.documentElement) || (window.DocumentTouch && document instanceof DocumentTouch));
 	
 	//sometimes the only good way to work around browser's pecularities is to detect them using user-agents
 	//though it's not accurate
-	var agent = navigator.userAgent
-	ju.vars['webkit'] = !!agent.match(/AppleWebKit/i)
+	var agent = navigator.userAgent;
+	ju.vars['webkit'] = !!agent.match(/AppleWebKit/i);
 	ju.vars['safari'] = !!agent.match(/Safari/i) && !agent.match(/Chrome/i);
-	ju.vars['android'] = ju.vars['safari'] && !!agent.match(/Android/i)
-	ju.vars['ios_safari'] = !!agent.match(/OS ([4-9])(_\d)+ like Mac OS X/i) && !agent.match(/CriOS/i)
+	ju.vars['android'] = ju.vars['safari'] && !!agent.match(/Android/i);
+	ju.vars['ios_safari'] = !!agent.match(/OS ([4-9])(_\d)+ like Mac OS X/i) && !agent.match(/CriOS/i);
 	
 	ju.vars['ie'] = window.navigator.msPointerEnabled || (document.all && document.querySelector);//8-11
 	ju.vars['old_ie'] = document.all && !document.addEventListener;//8 and below
@@ -35,30 +51,10 @@ jQuery(function($) {
 	
 	ju.vars['non_auto_fixed'] = ju.vars['android'] || ju.vars['ios_safari'];
 	
-	
 	//sometimes we try to use 'tap' event instead of 'click' if jquery mobile plugin is available
 	ju['click_event'] = ju.vars['touch'] && jQuery.fn.tap ? 'tap' : 'click';
 })();
-
-
-
 (function($ , undefined) {
-
-	ju = {
-		functions: {},
-		
-		init: function(initAnyway) {
-			//initAnyway used to make sure the call is from our RequireJS app and not a document ready event!
-			var initAnyway = !!initAnyway && true;
-			if(typeof requirejs !== "undefined" && !initAnyway) return;
-			
-			for(var func in ju.functions) if(ju.functions.hasOwnProperty(func)) {
-				ju.functions[func]();
-			}
-		}
-	}
-
-
 	ju.functions.basics = function() {
 		// for android and ios we don't use "top:auto" when breadcrumbs is fixed
 		if(ju.vars['non_auto_fixed']) {
@@ -342,26 +338,6 @@ jQuery(function($) {
 
 //some ju helper functions
 (function($$ , undefined) {//$$ is ju.helper
- $$.unCamelCase = function(str) {
-	return str.replace(/([a-z])([A-Z])/g, function(match, c1, c2){ return c1+'-'+c2.toLowerCase() })
- }
- $$.strToVal = function(str) {
-	var res = str.match(/^(?:(true)|(false)|(null)|(\-?[\d]+(?:\.[\d]+)?)|(\[.*\]|\{.*\}))$/i);
-
-	var val = str;
-	if(res) {
-		if(res[1]) val = true;
-		else if(res[2]) val = false;
-		else if(res[3]) val = null;	
-		else if(res[4]) val = parseFloat(str);
-		else if(res[5]) {
-			try { val = JSON.parse(str) }
-			catch (err) {}
-		}
-	}
-
-	return val;
- }
  $$.getAttrSettings = function(elem, attr_list, prefix) {
 	if(!elem) return;
 	var list_type = attr_list instanceof Array ? 1 : 2;
@@ -372,10 +348,10 @@ jQuery(function($) {
 	var settings = {}
 	for(var li in attr_list) if(attr_list.hasOwnProperty(li)) {
 		var name = list_type == 1 ? attr_list[li] : li;
-		var attr_val, attr_name = $$.unCamelCase(name.replace(/[^A-Za-z0-9]{1,}/g , '-')).toLowerCase()
+		var attr_val, attr_name = name.replace(/[^A-Za-z0-9]{1,}/g , '-').unCamelCase().toLowerCase()
 
 		if( ! ((attr_val = elem.getAttribute(prefix + attr_name))  ) ) continue;
-		settings[name] = $$.strToVal(attr_val);
+		settings[name] = attr_val.toVal();
 	}
 
 	return settings;

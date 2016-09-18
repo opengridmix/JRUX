@@ -8,7 +8,7 @@
 /* ========================================================================
  * B-JUI: theme.js  v1.2
  * @author K'naan (xknaan@163.com)
- * http://git.oschina.net/xknaan/B-JUI/blob/master/BJUI/js/bjui-theme.js
+ * http://git.oschina.net/xknaan/B-JUI/blob/master/ju/js/ju-theme.js
  * ========================================================================
  * Copyright 2014 K'naan.
  * Licensed under Apache (http://www.apache.org/licenses/LICENSE-2.0)
@@ -24,10 +24,10 @@
     
     $(function() {
         var INIT_THEME = function() {
-            $themeLink = $('#bjui-link-theme')
-            $themeLis  = $('#bjui-themes')
+            $themeLink = $('#ju-link-theme')
+            $themeLis  = $('#ju-themes')
             if ($.cookie) {
-                var themeName = $.cookie('bjui_theme') || 'blue'
+                var themeName = $.cookie('ju_theme') || 'blue'
                 var $li = $themeLis.find('a.theme_'+ themeName)
                 
                 $li.theme({})
@@ -74,7 +74,7 @@
     Theme.prototype.cookie = function() {
         var theme = this.options.theme
         
-        if ($.cookie) $.cookie('bjui_theme', theme, { path: '/', expires: 30 });
+        if ($.cookie) $.cookie('ju_theme', theme, { path: '/', expires: 30 });
     }
     
     // THEME PLUGIN DEFINITION
@@ -87,9 +87,9 @@
         return this.each(function () {
             var $this   = $(this)
             var options = $.extend({}, Theme.DEFAULTS, $this.data(), typeof option == 'object' && option)
-            var data    = $this.data('bjui.theme')
+            var data    = $this.data('ju.theme')
             
-            if (!data) $this.data('bjui.theme', (data = new Theme(this, options)))
+            if (!data) $this.data('ju.theme', (data = new Theme(this, options)))
             if (typeof property == 'string' && $.isFunction(data[property])) {
                 [].shift.apply(args)
                 if (!args) data[property]()
@@ -116,7 +116,7 @@
     // THEME DATA-API
     // ==============
 
-    $(document).on('click.bjui.theme.data-api', '[data-toggle="theme"]', function(e) {
+    $(document).on('click.ju.theme.data-api', '[data-toggle="theme"]', function(e) {
         Plugin.call($(this))
         
         e.preventDefault()
